@@ -1,0 +1,118 @@
+@* Displays a products list. @param products A list of products @param
+flash Flash scope *@ 
+
+@(items1: List[(Int,String)],items2:List[(Int,String)],items3:List[(Int,String)],items4:Set[(String,String,String,String,String)],option:String)(form:Form[model.FormData])(implicit messages: play.api.i18n.Messages, request:RequestHeader) 
+
+
+
+
+
+
+
+@helper.form(action=routes.HomeController.createWidget,
+'id -> "userForm") {
+<fieldset>
+
+	@helper.inputText(form("country"),'id -> "country")
+	@helper.inputText(form("code"),'id -> "code") 
+	@helper.inputRadioGroup(
+	form("typ"), 
+	options = Seq("Report"->"Report","Search"->"Search"),
+	'onclick -> "invFunction()", 
+	'_label -> "Select Type of Values" )
+
+
+	<button type="submit">Search</button>
+</fieldset>
+}
+
+<script>
+function invFunction() {
+	if(document.getElementById('typ_Report').checked){
+	
+       document.getElementById("code").style.visibility="hidden"; 
+    document.getElementById("country").style.visibility="hidden"; }
+    else
+    {
+    	document.getElementById("code").style.visibility="visible"; 
+ document.getElementById("country").style.visibility="visible"; }
+}
+</script>
+
+<h1>@option</h1>
+
+@if(option=="Search") {
+
+@if(items4!=null){
+<table align="left">
+	<tr>
+		<th>Country/Code</th>
+		<th>Airport</th>
+	</tr>
+
+	@for(item <- items4) {
+	<tr>
+		<td>@item._1</td>
+		<td>@item._2</td>
+	</tr>
+	}
+</table>
+} } 
+
+
+@if(option=="Report") {
+
+ @if(items1!=null) {
+<table align ="center">
+	<tr>
+		<th>Country</th>
+		<th>Count(Number of Airports)</th>
+		
+	</tr>
+
+	@for(item <- items1) {
+	<tr>
+		<td>@item._2</td>
+		<td>@item._1</td>
+	</tr>
+	}
+</table>
+} 
+@if(items2!=null){
+<table align="right">
+	<tr>
+		
+		<th>Country</th>
+		<th>Type Of Runways</th>
+	</tr>
+
+	@for(item <- items2) {
+	<tr>
+		<td>@item._2</td>
+		<td>@item._1</td>
+	</tr>
+	}
+
+
+</table>
+} 
+@if(items3!=null){
+<table style="float: left">
+	<tr>
+		<th>Count</th>
+		<th>Common Runway Indication</th>
+	</tr>
+
+	@for(item <- items3) {
+	<tr>
+		<td>@item._2</td>
+		<td>@item._1</td>
+	</tr>
+	}
+
+
+</table>
+} 
+
+} 
+
